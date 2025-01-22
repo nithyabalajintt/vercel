@@ -1,0 +1,267 @@
+
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    background: url('img2.gif') no-repeat center center fixed;
+    background-size: cover;
+    color: #f8f7f7;
+    height: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+ }
+ 
+ /* Header */
+ header {
+    /*background: rgba(0, 0, 0, 0.9); */
+    color: black;
+    padding: 20px 10px;
+    text-align: center;
+ }
+ 
+ header .logo {
+    font-size: 2.2em;
+    color:black;
+    margin-left:5px;
+ }
+ 
+ header h1 {
+    margin: 0;
+
+    padding:6px;
+    font-size: 35px;
+    font-family:'Forum';
+    font-weight: 700;
+ }
+ /* Align icon and text side by side */
+ .header-container {
+     display: flex;
+     align-items: center;
+     justify-content: flex-start; /* Push content to the left */
+ }
+ 
+ .header-left {
+     display: flex;
+     align-items: center;
+     gap: 25px; /* Adjust spacing between the icon and the text */
+ 
+ }
+ 
+ .header-left i {
+     font-size: 2em;
+     margin-right: 10px;
+ }
+ 
+ .header-left h1 {
+     font-size: 2.4em;
+     margin: 0;
+     /*text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.9);*/
+ }
+ 
+ 
+ 
+ /* inside frontend */
+ main {
+    flex: 1;
+    padding: 20px 20px;
+    text-align: center;
+    font-family: 'Forum';
+ }
+ 
+ main h2 {
+    font-size: 3em;
+    font-weight:bold;
+    margin-top:0;
+    padding:0;
+    margin-bottom: 20px;
+    color: #fff;
+    /*text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.9);*/
+ }
+ 
+ main p {
+    margin-bottom: 30px;
+    font-size: 1.5em;
+    color: white;
+    font-weight:bold;
+    /*text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.9);*/
+ }
+ 
+ /* Form Styling */
+ .form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px 50px; /* Increased spacing */
+    justify-items: center;
+    align-items: center;
+    max-width: 800px;
+    margin: 0 auto;
+ }
+ 
+ .form-group {
+    width: 100%;
+    max-width: 350px;
+    text-align: left;
+    background: rgba(0, 0, 0, 0.8); /* Darker transparent box */
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.6);
+ }
+ 
+ label {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #f8f8f8;
+    margin-bottom: 8px;
+    display: block;
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.8);
+ }
+ 
+ input {
+    width: 100%;
+    padding: 14px;
+    font-size: 1em;
+    border: none;
+    border-radius: 6px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
+    background: rgba(255, 255, 255, 0.9);
+ }
+ 
+ /* Button Styling */
+ button {
+    margin-top: 20px;
+    padding: 12px 25px;
+    background: black; /* Updated button color */
+    color: white;
+    font-size: 1.3em;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.4);
+    border: 2px solid white;
+ }
+ 
+ button:hover {
+    background: rgb(247, 141, 41);;
+    transform: scale(1.05);
+ }
+ 
+ /* Footer */
+ footer {
+    background: rgba(0, 0, 0, 0.9); /* Match the header */
+    color: white;
+    text-align: center;
+    padding: 20px;
+    font-size: 1em;
+    font-family: 'Forum';
+ }
+ 
+ .footer-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+ }
+ 
+ .social-icons a {
+    color: white;
+    margin: 0 10px;
+    font-size: 1.5em;
+    transition: color 0.3s ease;
+ }
+ 
+ .social-icons a:hover {
+    color: #ff4500;
+ }
+ 
+ /* Responsive Design */
+ @media (max-width: 768px) {
+   .form-grid {
+      grid-template-columns: 1fr;
+  }
+
+  .footer-container {
+      flex-direction: column;
+      text-align: center;
+  }
+   .frontpage {
+       font-size: 30px; 
+       text-align: center; 
+       margin-left: 0;
+       padding: 0 10px; 
+   }
+
+   .frontpage h1 {
+       font-size: 25px; 
+       text-align: center; 
+   }
+
+   .frontpage h4 {
+       font-size: 24px;
+       margin-left: 0;
+       -webkit-text-stroke: 0; 
+   }
+
+   .frontpage p {
+       font-size: 30px;
+       margin-left: 0; 
+       text-align: center; 
+   }
+
+   #trynow {
+       font-size: 18px; 
+       width: 100%; 
+   }
+}
+ 
+.parent-container{
+    position: relative;
+    height:100vh;
+}
+.frontpage
+{
+    position: absolute;
+    text-align:left;
+    color:black;
+    /*top: 25%;
+    left: 35%;*/
+    margin:0;
+    padding: 0;
+    font-size:30px;
+    font-weight: bolder;
+    font-family: 'Arvo', serif;
+
+
+}
+    
+.frontpage h1{
+    text-align:left;
+    font-weight:700;
+    font-size: 35px;
+    font-family: 'Forum', serif;
+    margin:0;
+    padding:0;
+
+
+}
+.frontpage h4{
+    margin:0;
+    padding:0;
+    margin-left: 10px;
+    -webkit-text-stroke: 1px black;
+}
+.frontpage p{
+    margin:0;
+    padding:0;
+    color:black;
+    font-family: 'Arvo', serif;
+    font-weight:bold;
+    margin-left: 10px;
+
+}
+
+.trynow{
+    font-size: medium;
+}
