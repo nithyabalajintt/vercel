@@ -1,6 +1,4 @@
-import boto3
 import pickle
-import io
 import numpy as np
 import pandas as pd
 from fastapi import FastAPI, Request, Form
@@ -17,18 +15,12 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 # Setup Jinja2 templates
 templates = Jinja2Templates(directory="templates")
 
-# S3 client initialization
-s3_client = boto3.client('s3')
+# Load the model and scaler directly from local files (ensure these files are included in the deployment)
+with open('air_quality.pkl', 'rb') as f:
+    model = pickle.load(f)
 
-def load_model_from_s3(bucket_name, file_key):
-    # Download the file from S3 and load it into memory
-    obj = s3_client.get_object(Bucket=bucket_name, Key=file_key)
-    file_content = obj['Body'].read()
-    return pickle.load(io.BytesIO(file_content))
-
-# Load the model and scaler from S3
-model = load_model_from_s3('my-fastapi-models', 'air_quality.pkl')
-scaler = load_model_from_s3('my-fastapi-models', 'scaler.pkl')
+with open('scaler.pkl', 'rb') as f:
+    scaler = pickle.load(f)
 
 # Route for the frontpage
 @app.get("/", response_class=HTMLResponse)
