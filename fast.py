@@ -1,12 +1,13 @@
+import boto3
+import pickle
+import numpy as np
+import pandas as pd
 from fastapi import FastAPI, Request, Form
 from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
-from mangum import Mangum 
-import pickle
-import numpy as np
-import pandas as pd
-from typing import Tuple
+import uvicorn
+from io import BytesIO
 
 # Initialize FastAPI app
 app = FastAPI()
@@ -17,9 +18,19 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 # Setup Jinja2 templates
 templates = Jinja2Templates(directory="templates")
 
-# Load the model and scaler
-model = pickle.load(open('air_quality.pkl', 'rb'))
-scaler = pickle.load(open('scaler.pkl', 'rb'))
+# AWS S3 setup
+s3 = boto3.client('s3')
+BUCKET_NAME = "your-bucket-name"  # Replace with your actual S3 bucket name
+
+# Function to load model from S3
+def load_model_from_s3(model_key):
+    obj = s3.get_object(Bucket=BUCKET_NAME, Key=model_key)
+    model = pickle.load(BytesIO(obj['Body'].read()))
+    return model
+
+# Load the model and scaler dynamically from S3
+model = load_model_from_s3('path/to/air_quality.pkl')  # Replace with your actual S3 path
+scaler = load_model_from_s3('path/to/scaler.pkl')  # Replace with your actual S3 path
 
 # Route for the frontpage
 @app.get("/", response_class=HTMLResponse)
@@ -66,9 +77,5 @@ async def predict(
     return {"Prediction": result_message}
 
 # Run the FastAPI app on uvicorn server
-import uvicorn
-
 if __name__ == "__main__":
-    uvicorn.run("fast:app", host="127.0.0.1", port=8000, reload=True)
-
-handler = Mangum(app)
+    uvicorn.run(app, host="127.0.0.1", port=8000, reload=True)
