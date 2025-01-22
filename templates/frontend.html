@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Air Quality Prediction</title>
+    <link rel="icon" href="static/css/lungicon.png" type="image/png">
+    <link rel="stylesheet" href="static/css/styles 2.css">
+    <script defer src="static\js\script.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href='https://fonts.googleapis.com/css2?family=Forum&display=swap' rel='stylesheet'/> 
+</head>
+<body >
+    <!-- Header -->
+    <header id="page1header"style="background: rgba(13, 13, 12, 0.8);">
+        <div class="header-container">
+            <div class="logo">
+                <i class= "fa-solid fa-lungs"></i>
+            </div>
+            <h1 style="color:white;">BreatheBetter</h1>
+        </div>
+    </header>
+
+ 
+    <main style="background: rgba(13, 13, 12, 0.8);">
+        <h2 style="color:rgb(247, 141, 41); font-weight:bold;">Predict Air Quality</h2>
+        <p style="color:white; font-weight: bolder;">Please fill the values for <span style="color:rgb(247, 141, 41);">parameters</span> below to predict the <span style="color:rgb(247, 141, 41);">air quality </span>in your area.</p>
+        
+        <form id="predictionForm" method="POST" action="/predict">
+            <div class="form-grid">
+
+                <div class="form-group">
+                    <label for="temperature"><i class="fas fa-thermometer-half"></i> Temperature (°C): </label>
+                    <input type="number" id="temperature" name="temperature" placeholder="Enter temperature here" step="any" required>
+                    <span class="error-message" id="temperatureError"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="humidity"><i class="fas fa-tint"></i> Humidity (%):</label>
+                    <input type="number" id="humidity" name="humidity" placeholder="Enter humidity here" step="any" required>
+                    <span class="error-message" id="humidityError"></span>
+                </div>
+                <div class="form-group">
+                    <label for="pm25"><i class="fas fa-wind"></i> PM2.5 (µg/m³):</label>
+                    <input type="number" id="pm25" name="pm25" placeholder="Enter PM2.5 here" step="any" required>
+                    <span class="error-message" id="pm25Error"></span>
+                </div>
+                <div class="form-group">
+                    <label for="pm10"><i class="fas fa-cloud"></i> PM10 (µg/m³):</label>
+                    <input type="number" id="pm10" name="pm10" placeholder="Enter PM10 here" step="any" required>
+                    <span class="error-message" id="pm10Error"></span>
+                </div>
+                <div class="form-group">
+                    <label for="so2"><i class="fas fa-cloud-meatball"></i> SO2 (µg/m³):</label>
+                    <input type="number" id="so2" name="so2" placeholder="Enter SO2 here" step="any" required>
+                    <span class="error-message" id="so2Error"></span>
+                </div>
+                <div class="form-group">
+                    <label for="no2"><i class="fas fa-leaf"></i> NO2 (µg/m³):</label>
+                    <input type="number" id="no2" name="no2" placeholder="Enter NO2 here" step="any" required>
+                    <span class="error-message" id="no2Error"></span>
+                </div>
+                <div class="form-group">
+                    <label for="co"><i class="fas fa-gas-pump"></i> CO (mg/m³):</label>
+                    <input type="number" id="co" name="co" placeholder="Enter CO here" step="any" required>
+                    <span class="error-message" id="coError"></span>
+                </div>
+                <div class="form-group">
+                    <label for="proximity"><i class="fa-solid fa-industry"></i> Proximity to Industrial Areas(km):</label>
+                    <input type="number" id="proximity" name="proximity" placeholder="Enter the Proximity to Industrial Areas here" step="any" required>
+                    <span class="error-message" id="proximityError"></span>
+                </div>
+                <div class="form-group">
+                    <label for="population"><i class="fas fa-users"></i> Population Density :</label>
+                    <input type="number" id="population" name="population" placeholder="Enter the Population Density here" required>
+                    <span class="error-message" id="populationError"></span>
+                </div>
+
+            </div>
+            <button type="button" id="predictButton">Predict</button>
+            <button type="button" id="resetButton"> Reset</button>
+        </form>
+        <div id="resultContainer" style="margin-top: 50px; display: none; text-align: center;">
+            <div style="padding: 15px; border-radius: 10px; color: white; font-weight: bold; font-size: 18px;">
+                <p id="resultMessage"></p>
+            </div>
+        </div>
+    </main>
+    <script>
+
+        document.getElementById('predictButton').addEventListener('click', function () {
+            const form = document.getElementById('predictionForm');
+            const formData = new FormData(form);
+            let valid = true; // variable to track if all fields are valid
+        
+            
+            const errorMessages = document.querySelectorAll('.error-message'); // checking all previous error messages
+            errorMessages.forEach(error => error.style.display = 'none');
+        
+           
+            formData.forEach((value, key) => {    // checking each field
+                const input = document.getElementById(key);
+                const errorElement = document.getElementById(`${key}Error`);
+        
+                if (!value) {
+                    valid = false;
+                    errorElement.textContent = `${key} is required`;
+                    errorElement.style.display = 'block';
+                    input.style.border = '2px solid red'; // highlighting
+                } else {
+                    input.style.border = ''; // resetting the border if valid
+                }
+            });
+        
+            if (valid) {
+                
+                fetch('/predict', {     //  if all fields are valid proceeding with the preediction
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    
+                    const resultContainer = document.getElementById('resultContainer'); // showing the result container
+                    const resultMessage = document.getElementById('resultMessage');
+        
+                    resultMessage.textContent = data.Prediction;
+                    resultContainer.style.display = 'block';
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            }
+        });
+        document.getElementById('resetButton').addEventListener('click', function () {
+            const form = document.getElementById('predictionForm');
+            const resultContainer = document.getElementById('resultContainer');
+        
+            
+            form.reset();
+            const errorMessages = document.querySelectorAll('.error-message'); // resetting the form and clear errors
+            errorMessages.forEach(error => (error.style.display = 'none'));
+            resultContainer.style.display = 'none';
+        
+          
+            const inputs = form.querySelectorAll('input');   // resetting field borders
+            inputs.forEach(input => (input.style.border = ''));
+        });
+    </script>
+    
+
+    <!-- Footer -->
+    <footer >
+        <div class="footer-container">
+            <p>&copy; 2025 Air Quality Prediction | Developed by <strong>Group C</strong></p>
+            <div class="social-icons">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
